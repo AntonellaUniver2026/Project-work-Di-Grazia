@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MoMA Digital Experience | Prototipo didattico</title>
+<link rel="stylesheet" href="static/style.css"></head>
+<body><header><div class="brand"><span class="brandmark">M<span class="smallmark">/</span>DE</span><span>MoMA Digital Experience <small>Progetto accademico indipendente · Anteprima GitHub Pages</small></span></div>
+<nav aria-label="Navigazione principale"><a href="#catalogo">Catalogo</a><a href="#visite">Visite</a><a href="#feedback">Feedback</a><a href="#gestione">Amministrazione</a></nav></header>
+<main><section class="hero"><div><p class="eyebrow">UN PROTOTIPO PER LA GESTIONE CULTURALE</p><h1>Scoprire l'arte.<br>Organizzare le visite.</h1><p>Un esempio di piattaforma per consultare opere della collezione, prenotare eventi dimostrativi e raccogliere opinioni.</p><a class="primarylink" href="#visite">Esplora le visite <span aria-hidden="true">↗</span></a></div><div class="hero-art" aria-hidden="true"><div class="shape one"></div><div class="shape two"></div><div class="shape three"></div></div></section>
+<div class="disclaimer"><strong>Anteprima su GitHub Pages:</strong> questa pagina mostra il catalogo e gli eventi di esempio. La registrazione di prenotazioni, i feedback e l’amministrazione richiedono il server Python FastAPI; qui non vengono salvati o inviati dati. Progetto universitario indipendente, non affiliato al MoMA.</div>
+<section id="catalogo"><div class="section-heading"><div><p class="eyebrow">ARCHIVIO DIMOSTRATIVO</p><h2>Catalogo delle opere</h2></div><div class="filters"><label for="searchOpere">Cerca per titolo o artista</label><input type="search" id="searchOpere" placeholder="Es. Picasso"></div></div><div id="opereList" class="cards" aria-live="polite"></div><p class="subtle">Metadati essenziali da schede pubbliche MoMA. Le immagini delle opere non sono riprodotte.</p></section>
+<section id="visite" class="soft"><div class="section-heading"><div><p class="eyebrow">AGENDA DI PROVA</p><h2>Visite ed eventi</h2></div></div><div class="twocol"><div id="eventiList" class="event-list"></div><form id="prenotaForm" class="panel"><h3>Prenota una visita dimostrativa</h3><label for="eventoId">Evento</label><select name="evento_id" id="eventoId" required></select><label for="nome">Nome e cognome</label><input id="nome" name="nome" required minlength="2" maxlength="80"><label for="email">Email di test</label><input id="email" type="email" name="email" required maxlength="120"><label for="persone">Partecipanti</label><input id="persone" type="number" name="persone" min="1" max="6" value="1" required><button type="submit">Verifica la prenotazione</button><p class="subtle">Usa dati fittizi. Questa anteprima non invia dati. La registrazione su SQLite è disponibile eseguendo il backend Python.</p><p id="prenotaEsito" role="status" class="status"></p></form></div></section>
+<section id="feedback"><div class="section-heading"><div><p class="eyebrow">ASCOLTO DEI VISITATORI</p><h2>Lascia un feedback</h2></div></div><form class="feedbackform panel" id="feedbackForm"><label for="voto">Valutazione</label><select id="voto"><option value="5">5 — Ottima</option><option value="4">4 — Buona</option><option value="3">3 — Discreta</option><option value="2">2 — Sufficiente</option><option value="1">1 — Da migliorare</option></select><label for="commento">Commento</label><textarea id="commento" minlength="4" maxlength="500" required rows="3" placeholder="Racconta com'è stata l'esperienza nel prototipo…"></textarea><button type="submit">Verifica il feedback</button><p id="feedbackEsito" role="status" class="status"></p></form></section>
+<section id="gestione" class="soft"><div class="section-heading"><div><p class="eyebrow">ACCESSO RISERVATO</p><h2>Area amministrativa</h2></div></div><div class="panel admin-entry"><h3>Dashboard amministrativa</h3><p>La gestione di prenotazioni, presenze, feedback ed eventi è disponibile eseguendo il backend Python presente nel repository. La versione GitHub Pages è un’anteprima dell’interfaccia e non richiede credenziali.</p><p class="subtle">Per il prototipo completo: <code>uvicorn main:app --reload</code>, con le dipendenze indicate nel README.</p></div><div id="adminData" hidden><div class="stats" id="stats"></div><h3>Prenotazioni registrate</h3><div class="table-wrap"><table><thead><tr><th>Cod.</th><th>Visitatore</th><th>Evento</th><th>Posti</th><th>Stato</th></tr></thead><tbody id="adminRows"></tbody></table></div><p class="subtle">I dati sono destinati esclusivamente a prove locali; per un servizio pubblico occorrono autenticazione robusta, protezione dei dati personali e infrastruttura dedicata.</p></div></section></main>
+<footer><strong>MoMA Digital Experience</strong><span>Prototipo universitario autonomo • Nessun collegamento con la biglietteria MoMA</span><a href="https://www.moma.org/collection/about/" rel="noopener noreferrer">Fonte culturale: MoMA ↗</a><a href="https://github.com/AntonellaUniver2026/Project-work-Di-Grazia" rel="noopener noreferrer">Codice del progetto su GitHub ↗</a></footer><script>
+// Anteprima statica: i dati sono esempi già inclusi nel backend Python originale.
+const $ = id => document.getElementById(id);
+const opere = [
+ {titolo:'Les Demoiselles d’Avignon',artista:'Pablo Picasso',anno:'1907',categoria:'Pittura',url:'https://www.moma.org/collection/works/79766'},
+ {titolo:'The Persistence of Memory',artista:'Salvador Dalí',anno:'1931',categoria:'Pittura',url:'https://www.moma.org/collection/works/79018'},
+ {titolo:'Campbell’s Soup Cans',artista:'Andy Warhol',anno:'1962',categoria:'Pittura',url:'https://www.moma.org/collection/works/79809'}
+];
+const eventi = [
+ {id:1,titolo:'Percorso introduttivo all’arte moderna',data:'15/02/2027',orario:'10:30',posti:20,descrizione:'Visita dimostrativa con prenotazione di posti.'},
+ {id:2,titolo:'Dal cubismo alla Pop Art',data:'16/02/2027',orario:'14:00',posti:12,descrizione:'Percorso simulato per piccoli gruppi.'},
+ {id:3,titolo:'Collezioni e nuovi linguaggi',data:'17/02/2027',orario:'11:00',posti:16,descrizione:'Attività culturale di esempio.'}
+];
+function renderOpere(){
+ const q=$('searchOpere').value.trim().toLocaleLowerCase('it');
+ const trovate=opere.filter(o=>(o.titolo+' '+o.artista).toLocaleLowerCase('it').includes(q));
+ const contenitore=$('opereList');contenitore.replaceChildren();
+ if(!trovate.length){contenitore.textContent='Nessun risultato per la ricerca.';return;}
+ for(const o of trovate){
+  const card=document.createElement('article');card.className='art-card';
+  const tag=document.createElement('span');tag.className='tag';tag.textContent=o.categoria+' · '+o.anno;
+  const h3=document.createElement('h3');h3.textContent=o.titolo;
+  const p=document.createElement('p');p.textContent=o.artista;
+  const a=document.createElement('a');a.href=o.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Scheda ufficiale MoMA ↗';
+  card.append(tag,h3,p,a);contenitore.appendChild(card);
+ }
+}
+function renderEventi(){
+ const list=$('eventiList');list.replaceChildren();
+ const select=$('eventoId');select.replaceChildren();
+ for(const evento of eventi){
+   const box=document.createElement('div');box.className='event';
+   const heading=document.createElement('strong');heading.textContent=evento.titolo;
+   const detail=document.createElement('span');detail.textContent=`${evento.data} · ${evento.orario} · ${evento.posti} posti illustrativi`;
+   const p=document.createElement('p');p.textContent=evento.descrizione;
+   box.append(heading,detail,p);list.appendChild(box);
+   const op=document.createElement('option');op.value=evento.id;op.textContent=evento.titolo;select.appendChild(op);
+ }
+}
+$('searchOpere').addEventListener('input',renderOpere);
+$('prenotaForm').addEventListener('submit',e=>{e.preventDefault();$('prenotaEsito').textContent='Questa è una pagina dimostrativa: nessuna prenotazione è stata inviata o registrata. Per testare la prenotazione con database avvia il backend Python.';});
+$('feedbackForm').addEventListener('submit',e=>{e.preventDefault();$('feedbackEsito').textContent='Questa anteprima non registra feedback. La funzione completa è disponibile nel prototipo Python.';});
+renderOpere();renderEventi();
+</script></body></html>
